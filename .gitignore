@@ -30,3 +30,7 @@ __pycache__/
 *.sw?
 .env
 **/.env
+
+# DermaCare AI dataset and trained model
+backend/ai-service/data/
+backend/ai-service/models/

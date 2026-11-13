@@ -5,7 +5,7 @@ import hmac
 import logging
 import os
 import uuid
-from typing import Any
+from typing import Any, Optional
 
 import cv2
 import numpy as np
@@ -141,21 +141,28 @@ def image_metrics(bgr_image: np.ndarray) -> dict[str, Any]:
     }
 
 
-def require_service_key(x_api_key: str | None = Header(default=None)) -> None:
+def require_service_key(x_api_key: Optional[str] = Header(default=None)) -> None:
     expected_key = os.getenv("ML_SERVICE_API_KEY", "")
+
     if len(expected_key) < 32:
-        raise HTTPException(status_code=503, detail="Analysis service authentication is not configured.")
+        raise HTTPException(
+            status_code=503,
+            detail="Analysis service authentication is not configured."
+        )
+
+
     if not x_api_key or not hmac.compare_digest(x_api_key, expected_key):
-        raise HTTPException(status_code=401, detail="A valid service API key is required.")
-
-
+        raise HTTPException(
+            status_code=401,
+            detail="A valid service API key is required."
+        )
 @app.get("/healthz")
 async def health() -> dict[str, Any]:
     return {"status": "ok", "classifier": "available" if model_runner.model else "not_configured"}
 
 
 @app.post("/analyze", response_model=None, dependencies=[Depends(require_service_key)])
-async def analyze(request: Request) -> dict[str, Any] | JSONResponse:
+async def analyze(request: Request) -> Any:
     content_type = request.headers.get("content-type", "")
     try:
         content_length = request.headers.get("content-length")

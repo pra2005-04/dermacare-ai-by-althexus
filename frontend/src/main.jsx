@@ -12,6 +12,7 @@ import ReportPage from './components/ReportPage.jsx';
 import Login from './components/common/Login.jsx';
 import ProfilePage from './components/common/Profile.jsx';
 import RequireAuth from './components/common/RequireAuth.jsx';
+import SettingsPage from './components/SettingsPage.jsx';
 
 // Admin pages
 import AdminLogin from './components/admin/AdminLogin.jsx';
@@ -33,6 +34,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/dashboard" element={<RequireAuth><DashboardPage /></RequireAuth>} />
         <Route path="/analyze" element={<RequireAuth><AnalyzePage /></RequireAuth>} />
         <Route path="/report" element={<RequireAuth><ReportPage /></RequireAuth>} />
+        <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
         <Route path="/profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
 
         {/* Admin routes */}

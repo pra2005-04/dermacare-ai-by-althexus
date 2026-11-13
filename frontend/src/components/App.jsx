@@ -9,6 +9,7 @@ import AdminSkinAnalysis from './admin/AdminSkinAnalysis';
 import AdminReports from './admin/AdminReports';
 import AdminContent from './admin/AdminContent';
 import AdminSettings from './admin/AdminSettings';
+import SettingsPage from './SettingsPage';
 import { apiRequest } from '../lib/api';
 
 export function App() {
@@ -74,11 +75,15 @@ export function App() {
   if (pathname.endsWith("/admin/dashboard")) {
     return <AdminDashboard />;
   }
-
-  if (pathname.endsWith("/admin")) {
-    return <AdminLogin />;
+// User Settings
+if (pathname.endsWith("/settings")) {
+  if (!localStorage.getItem('dermacare-auth-token')) {
+    window.location.href = `${import.meta.env.BASE_URL}login`;
+    return null;
   }
 
+  return <SettingsPage />;
+}
   // Normal public website
   return (
     <>
